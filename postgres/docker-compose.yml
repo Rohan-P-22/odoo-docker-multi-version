@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - shared-db-network
+
+volumes:
+  postgres-data:
+
+networks:
+  shared-db-network:
+    name: shared-db-network

@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+
+  odoo18:
+    image: odoo:18
+    container_name: odoo18
+    restart: always
+    environment:
+      HOST: postgres
+      USER: odoo
+      PASSWORD: odoo
+    volumes:
+      - odoo18-data:/var/lib/odoo
+      - ./odoo.conf:/etc/odoo/odoo.conf
+      - ../custom-addons:/mnt/extra-addons
+    networks:
+      - odoo18-network
+      - shared-db-network
+
+  nginx18:
+    image: nginx:latest
+    container_name: nginx18
+    restart: always
+    ports:
+      - "8069:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - odoo18
+    networks:
+      - odoo18-network
+
+volumes:
+  odoo18-data:
+
+networks:
+  odoo18-network:
+  shared-db-network:
+    external: true

@@ -1,0 +1,37 @@
+services:
+  odoo19:
+    image: odoo:19
+    container_name: odoo19
+    restart: always
+    environment:
+      HOST: postgres
+      USER: odoo
+      PASSWORD: odoo
+    volumes:
+      - odoo19-data:/var/lib/odoo
+      - ./odoo.conf:/etc/odoo/odoo.conf
+      - ../custom-addons:/mnt/extra-addons
+    networks:
+      - odoo19-network
+      - shared-db-network
+
+  nginx19:
+    image: nginx:latest
+    container_name: nginx19
+    restart: always
+    ports:
+      - "8070:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - odoo19
+    networks:
+      - odoo19-network
+
+volumes:
+  odoo19-data:
+
+networks:
+  odoo19-network:
+  shared-db-network:
+    external: true
