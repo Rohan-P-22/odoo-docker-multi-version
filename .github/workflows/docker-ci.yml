@@ -1,0 +1,40 @@
+name: Odoo Docker CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  docker-check:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Docker Compose
+        run: |
+          sudo apt update
+          sudo apt install docker-compose -y
+
+      - name: Validate Odoo18 Compose
+        run: |
+          cd odoo18
+          docker compose config
+
+      - name: Validate Odoo19 Compose
+        run: |
+          cd ../odoo19
+          docker compose config
+
+      - name: Validate PostgreSQL Compose
+        run: |
+          cd ../postgres
+          docker compose config
