@@ -31,10 +31,10 @@ jobs:
 
       - name: Validate Odoo19 Compose
         run: |
-          cd ../odoo19
+          cd odoo19
           docker compose config
 
       - name: Validate PostgreSQL Compose
         run: |
-          cd ../postgres
+          cd postgres
           docker compose config
