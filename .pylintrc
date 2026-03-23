@@ -1,0 +1,27 @@
+[MASTER]
+ignore=venv,node_modules,.git,__pycache__
+
+[MESSAGES CONTROL]
+disable=
+    C0114,  # missing module docstring
+    C0115,  # missing class docstring
+    C0116,  # missing function docstring
+    E0401,  # import error (odoo not installed locally)
+    R0903,  # too few public methods
+    W1203   # logging format warning
+
+[FORMAT]
+max-line-length=88
+
+[BASIC]
+good-names=i,j,k,ex,Run,_
+
+[DESIGN]
+max-args=5
+max-locals=15
+max-returns=6
+max-branches=12
+
+[ODOO]
+# basic Odoo checks enabled automatically
+# keep minimal for compatibility
