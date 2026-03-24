@@ -1,49 +1,27 @@
-name: Odoo Docker CI/CD
+name: Odoo CI (Basic)
 
 on:
   push:
-    branches:
-      - main
+    branches: [main, develop]
+  pull_request:
 
 jobs:
-
-  docker-check:
-
+  lint:
+    name: Lint & Code Quality
     runs-on: ubuntu-latest
 
     steps:
-
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Docker Compose
-        run: |
-          sudo apt update
-          sudo apt install docker-compose -y
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-      - name: Validate Odoo18 Compose
+      - name: Install dependencies
         run: |
-          cd odoo18
-          docker compose config
+          pip install pre-commit pylint pylint-odoo flake8 black isort
 
-      - name: Validate Odoo19 Compose
-        run: |
-          cd odoo19
-          docker compose config
-
-      - name: Validate PostgreSQL Compose
-        run: |
-          cd postgres
-          docker compose config
-
-      - name: Login to Docker Hub
-        run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      - name: Build Docker Image
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/odoo-multi:latest .
-
-      - name: Push Docker Image
-        run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/odoo-multi:latest
+      - name: Run pre-commit
+        run: pre-commit run --all-files
