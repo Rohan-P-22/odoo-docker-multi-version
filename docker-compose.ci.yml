@@ -23,6 +23,7 @@ services:
     command: >
       odoo
       --db_host=postgres
+      docker ps -a
       -d test_db
       -i base
       --stop-after-init
