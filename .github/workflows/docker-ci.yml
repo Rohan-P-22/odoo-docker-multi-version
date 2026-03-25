@@ -57,12 +57,18 @@ jobs:
     - name: Run Odoo tests
       run: |
         docker run --rm \
-          -e DB_HOST=postgres \
+          --network host \
+          -e DB_HOST=localhost \
           -e DB_PORT=5432 \
           -e DB_USER=odoo \
           -e DB_PASSWORD=odoo \
           odoo-test \
-          odoo -d test_db -i base \
+          odoo \
+          --db_host=postgres \
+          --db_port=5432 \
+          --db_user=odoo \
+          --db_password=odoo \
+          -d test_db -i base \
           --test-enable \
           --stop-after-init
 
