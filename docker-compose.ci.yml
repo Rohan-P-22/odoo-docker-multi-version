@@ -17,6 +17,8 @@ services:
       postgres:
         condition: service_healthy
 
+    entrypoint: [""]
+
     command: >
       odoo
       -c /dev/null
