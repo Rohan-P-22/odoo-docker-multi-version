@@ -1,9 +1,11 @@
 FROM odoo:18
 
+USER root
+
 WORKDIR /app
 
 COPY . .
 
-EXPOSE 8069
+RUN pip install --no-cache-dir psycopg2-binary
 
-CMD ["odoo"]
+USER odoo
