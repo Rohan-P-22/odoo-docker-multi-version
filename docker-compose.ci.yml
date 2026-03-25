@@ -2,7 +2,7 @@ services:
   postgres:
     image: postgres:15
     environment:
-      POSTGRES_DB: odoo
+      POSTGRES_DB: test_db
       POSTGRES_USER: odoo
       POSTGRES_PASSWORD: odoo
     healthcheck:
@@ -17,15 +17,12 @@ services:
       postgres:
         condition: service_healthy
 
-    entrypoint: [""]
+    volumes:
+      - ./odoo-ci.conf:/etc/odoo/odoo.conf
 
     command: >
       odoo
-      -c /dev/null
       --db_host=postgres
-      --db_port=5432
-      --db_user=odoo
-      --db_password=odoo
       -d test_db
       -i base
       --stop-after-init
