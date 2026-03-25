@@ -26,6 +26,7 @@ services:
       --db_user=odoo
       --db_password=odoo
       --database=test_db
+      --db-filter=test_db
       -i base
       --test-enable
       --stop-after-init
