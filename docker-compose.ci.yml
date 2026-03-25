@@ -1,15 +1,13 @@
 services:
-
   postgres:
     image: postgres:15
     environment:
-      POSTGRES_DB: test_db
+      POSTGRES_DB: odoo
       POSTGRES_USER: odoo
       POSTGRES_PASSWORD: odoo
-
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U odoo -d test_db"]
-      interval: 10s
+      test: ["CMD-SHELL", "pg_isready -U odoo"]
+      interval: 5s
       timeout: 5s
       retries: 5
 
@@ -19,18 +17,12 @@ services:
       postgres:
         condition: service_healthy
 
-    environment:
-      HOST: postgres
-      USER: odoo
-      PASSWORD: odoo
-
     command: >
       odoo
       --db_host=postgres
       --db_port=5432
       --db_user=odoo
       --db_password=odoo
-      --database=test_db
-      --db-filter=test_db
+      -d odoo
       -i base
       --stop-after-init
