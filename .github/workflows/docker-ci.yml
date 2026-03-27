@@ -74,3 +74,4 @@ jobs:
           script: |
             cd /opt/odoo-docker
             ./deploy.sh
+          debug: true
