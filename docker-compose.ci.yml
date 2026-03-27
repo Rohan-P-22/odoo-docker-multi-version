@@ -12,7 +12,7 @@ services:
       retries: 5
 
   odoo:
-    build: .
+    image: rohanp1722/odoo-multi-version:latest
     depends_on:
       postgres:
         condition: service_healthy
