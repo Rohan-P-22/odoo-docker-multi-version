@@ -3,38 +3,57 @@
 echo "🚀 Pull latest image..."
 docker pull rohanp1722/odoo-multi-version:latest
 
+echo "💾 Saving current image..."
+OLD_IMAGE=$(docker images rohanp1722/odoo-multi-version:latest -q)
+
 # -------------------------
-# ODOO18 ZERO DOWNTIME
+# ODOO18 UPDATE
 # -------------------------
 echo "🔄 Updating Odoo18..."
 
 cd /opt/odoo-docker/odoo18
+docker compose up -d --no-deps odoo18
 
-# Start new container without stopping old
-docker compose up -d --no-deps --build odoo18
+echo "⏳ Checking Odoo18 health..."
 
-echo "⏳ Waiting for Odoo18 to be healthy..."
-sleep 15
+sleep 10
 
-# Restart nginx (optional if using reverse proxy)
-docker compose restart nginx18
+STATUS=$(docker inspect --format='{{.State.Health.Status}}' odoo18)
 
-echo "✅ Odoo18 updated!"
+if [ "$STATUS" != "healthy" ]; then
+  echo "❌ Odoo18 FAILED! Rolling back..."
+
+  docker tag $OLD_IMAGE rohanp1722/odoo-multi-version:latest
+  docker compose up -d --no-deps odoo18
+
+  exit 1
+fi
+
+echo "✅ Odoo18 OK"
 
 # -------------------------
-# ODOO19 ZERO DOWNTIME
+# ODOO19 UPDATE
 # -------------------------
 echo "🔄 Updating Odoo19..."
 
 cd /opt/odoo-docker/odoo19
+docker compose up -d --no-deps odoo19
 
-docker compose up -d --no-deps --build odoo19
+echo "⏳ Checking Odoo19 health..."
 
-echo "⏳ Waiting for Odoo19..."
-sleep 15
+sleep 10
 
-docker compose restart nginx19
+STATUS=$(docker inspect --format='{{.State.Health.Status}}' odoo19)
 
-echo "✅ Odoo19 updated!"
+if [ "$STATUS" != "healthy" ]; then
+  echo "❌ Odoo19 FAILED! Rolling back..."
 
-echo "🔥 ZERO DOWNTIME DEPLOY DONE 🔥"
+  docker tag $OLD_IMAGE rohanp1722/odoo-multi-version:latest
+  docker compose up -d --no-deps odoo19
+
+  exit 1
+fi
+
+echo "✅ Odoo19 OK"
+
+echo "🔥 AUTO-ROLLBACK DEPLOY DONE 🔥"
