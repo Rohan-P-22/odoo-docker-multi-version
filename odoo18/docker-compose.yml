@@ -17,6 +17,11 @@ services:
     networks:
       - odoo18-network
       - shared-db-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8069"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   nginx18:
     image: nginx:latest
