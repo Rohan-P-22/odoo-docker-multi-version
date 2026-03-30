@@ -1,8 +1,6 @@
 #!/bin/bash
 
-echo "📥 Pulling latest code..."
-cd /opt/odoo-docker
-git pull origin main
+
 
 echo "🚀 Pull latest image..."
 docker pull rohanp1722/odoo-multi-version:latest
