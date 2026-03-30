@@ -1,17 +1,8 @@
 #!/bin/bash
 
-
-
 echo "🚀 Pull latest image..."
 docker pull rohanp1722/odoo-multi-version:latest
 
-echo "🔄 Restart Odoo18..."
-cd /opt/odoo-docker/odoo18
-docker compose up -d --scale odoo18=3
-
-echo "🔄 Restart Odoo19..."
-cd /opt/odoo-docker/odoo19
-docker compose up -d --scale odoo19=3
 
 echo "💾 Saving current image..."
 OLD_IMAGE=$(docker images rohanp1722/odoo-multi-version:latest -q)
