@@ -1,6 +1,7 @@
 services:
   odoo19:
-    image: rohanp1722/odoo-multi-version:latest
+    image: odoo:19
+    container_name: odoo19
     restart: always
     environment:
       HOST: postgres
