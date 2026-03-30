@@ -1,10 +1,8 @@
 version: "3.8"
-
 services:
-
   odoo18:
-    image: odoo:18
-    container_name: odoo18
+    image: rohanp1722/odoo-multi-version:latest
+    #container_name: odoo18
     restart: always
     environment:
       HOST: postgres
@@ -21,7 +19,6 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:8069"]
       interval: 10s
       timeout: 5s
-      retries: 5
 
   nginx18:
     image: nginx:latest
