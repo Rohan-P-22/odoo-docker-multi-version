@@ -3,22 +3,24 @@ services:
     image: odoo:19
     container_name: odoo19
     restart: always
+    env_file: .env
     environment:
-      HOST: postgres
-      USER: odoo
-      PASSWORD: odoo
+      HOST: ${DB_HOST}
+      USER: ${DB_USER}
+      PASSWORD: ${DB_PASSWORD}
     volumes:
       - odoo19-data:/var/lib/odoo
       - ./odoo.conf:/etc/odoo/odoo.conf
-      - ../custom-addons:/mnt/extra-addons
+      - ./addons:/mnt/extra-addons
     networks:
       - odoo19-network
       - shared-db-network
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8069"]
-      interval: 10s
-      timeout: 5s
+      interval: 30s
+      timeout: 10s
       retries: 5
+      start_period: 60s
 
   nginx19:
     image: nginx:latest
@@ -26,8 +28,10 @@ services:
     restart: always
     ports:
       - "8070:80"
+      - "8444:443"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
     depends_on:
       - odoo19
     networks:
