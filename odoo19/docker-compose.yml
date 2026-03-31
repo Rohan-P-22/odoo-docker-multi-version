@@ -1,6 +1,6 @@
 services:
   odoo19:
-    image: rohanp1722/odoo-multi-version:latest
+    image: rohanp1722/odoo-multi-version:19-latest
     container_name: odoo19
     restart: always
     env_file: .env

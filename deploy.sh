@@ -1,15 +1,15 @@
 #!/bin/bash
 set -e
 
-echo "💾 Saving OLD image ID before pull..."
-OLD_IMAGE=$(docker images rohanp1722/odoo-multi-version:latest -q)
-echo "Old image: $OLD_IMAGE"
+echo "💾 Saving OLD image IDs before pull..."
+OLD_IMAGE_18=$(docker images rohanp1722/odoo-multi-version:18-latest -q)
+OLD_IMAGE_19=$(docker images rohanp1722/odoo-multi-version:19-latest -q)
+echo "Old odoo18 image: $OLD_IMAGE_18"
+echo "Old odoo19 image: $OLD_IMAGE_19"
 
-echo "🚀 Pulling latest image..."
-docker pull rohanp1722/odoo-multi-version:latest
-
-NEW_IMAGE=$(docker images rohanp1722/odoo-multi-version:latest -q)
-echo "New image: $NEW_IMAGE"
+echo "🚀 Pulling latest images..."
+docker pull rohanp1722/odoo-multi-version:18-latest
+docker pull rohanp1722/odoo-multi-version:19-latest
 
 # -------------------------
 # ODOO18 UPDATE
@@ -26,7 +26,7 @@ echo "Odoo18 status: $STATUS"
 
 if [ "$STATUS" != "healthy" ]; then
   echo "❌ Odoo18 FAILED! Rolling back..."
-  docker tag $OLD_IMAGE rohanp1722/odoo-multi-version:rollback
+  docker tag $OLD_IMAGE_18 rohanp1722/odoo-multi-version:18-latest
   docker compose up -d --no-deps odoo18
   echo "🔙 Odoo18 rolled back!"
   exit 1
@@ -49,7 +49,7 @@ echo "Odoo19 status: $STATUS"
 
 if [ "$STATUS" != "healthy" ]; then
   echo "❌ Odoo19 FAILED! Rolling back..."
-  docker tag $OLD_IMAGE rohanp1722/odoo-multi-version:rollback
+  docker tag $OLD_IMAGE_19 rohanp1722/odoo-multi-version:19-latest
   docker compose up -d --no-deps odoo19
   echo "🔙 Odoo19 rolled back!"
   exit 1
