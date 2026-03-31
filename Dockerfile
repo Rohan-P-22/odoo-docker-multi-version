@@ -12,3 +12,5 @@ RUN mkdir -p /mnt/extra-addons && \
     chown -R odoo:odoo /mnt/extra-addons
 
 USER odoo
+
+# This is a test comment by Rohan - full CI/CD flow test
