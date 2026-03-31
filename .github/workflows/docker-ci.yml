@@ -8,7 +8,7 @@ on:
 jobs:
   lint:
     name: Lint & Code Quality
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout code
@@ -28,7 +28,7 @@ jobs:
 
   test:
     name: Run Odoo (Docker Compose)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: lint
 
     steps:
@@ -41,7 +41,7 @@ jobs:
 
   build:
     name: Build & Push Docker Image
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: test
 
     steps:
@@ -53,15 +53,19 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/odoo-multi-version:latest .
+          docker build \
+            -t ${{ secrets.DOCKER_USERNAME }}/odoo-multi-version:latest \
+            -t ${{ secrets.DOCKER_USERNAME }}/odoo-multi-version:1.0.${{ github.run_number }} \
+            .
 
       - name: Push Docker Image
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/odoo-multi-version:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/odoo-multi-version:1.0.${{ github.run_number }}
 
   deploy:
     name: Deploy to Server
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: build
 
     steps:
