@@ -3,7 +3,7 @@
     'version': '18.0.1.0.0',
     'category': 'Customer',
     'summary': 'Collect and manage customer feedback',
-    'description': 'Allows company to collect customer feedback with ratings and status tracking',
+    'description': 'Collect customer feedback with ratings and status tracking',
     'author': 'Himesh',
     'depends': ['base'],
     'data': [
