@@ -1,3 +1,14 @@
+# Secrets and certificates
+**/*.key
+**/*.crt
+**/*.pem
+
+# Swap files
+*.swp
+*.swo
+
+# Test comment cleanup
+
 **/.env
 **/ssl/
 # Byte-compiled / optimized / DLL files
