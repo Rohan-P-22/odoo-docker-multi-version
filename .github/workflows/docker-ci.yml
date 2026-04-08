@@ -91,5 +91,18 @@ jobs:
             cd /opt/odoo-docker
             git stash
             git pull origin main
+
+            # Restore odoo.conf if git pull deleted it
+            if [ ! -f odoo18/odoo.conf ] || [ -d odoo18/odoo.conf ]; then
+              echo "Restoring odoo18/odoo.conf from backup..."
+              rm -rf odoo18/odoo.conf
+              cp /opt/odoo-configs/odoo18.conf odoo18/odoo.conf
+            fi
+
+            if [ ! -f odoo19/odoo.conf ] || [ -d odoo19/odoo.conf ]; then
+              echo "Restoring odoo19/odoo.conf from backup..."
+              rm -rf odoo19/odoo.conf
+              cp /opt/odoo-configs/odoo19.conf odoo19/odoo.conf
+            fi
+
             ./deploy.sh
-          debug: true
