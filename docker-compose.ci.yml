@@ -2,7 +2,7 @@ services:
   postgres:
     image: postgres:15
     environment:
-      POSTGRES_DB: test_db
+      POSTGRES_DB: postgres      # just the default, odoo will create its own
       POSTGRES_USER: odoo
       POSTGRES_PASSWORD: odoo
     healthcheck:
@@ -11,18 +11,30 @@ services:
       timeout: 5s
       retries: 5
 
-  odoo:
-    image: rohanp1722/odoo-multi-version:latest
+  odoo18:
+    image: rohanp1722/odoo-multi-version:18-latest
     depends_on:
       postgres:
         condition: service_healthy
-
     volumes:
       - ./odoo-ci.conf:/etc/odoo/odoo.conf
-
     command: >
       odoo
       --db_host=postgres
-      -d test_db
+      -d test_db_18          # odoo CREATES this automatically
+      -i base
+      --stop-after-init
+
+  odoo19:
+    image: rohanp1722/odoo-multi-version:19-latest
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./odoo-ci.conf:/etc/odoo/odoo.conf
+    command: >
+      odoo
+      --db_host=postgres
+      -d test_db_19          # odoo CREATES this automatically
       -i base
       --stop-after-init

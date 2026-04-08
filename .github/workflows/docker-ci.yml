@@ -27,13 +27,19 @@ jobs:
         run: pre-commit run --all-files
 
   test:
-    name: Run Odoo (Docker Compose)
+    name: Run Odoo CI Tests (v18 + v19)
     runs-on: ubuntu-22.04
     needs: lint
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Build Odoo18 image locally    # ✅ build first
+        run: docker build -f Dockerfile.18 -t rohanp1722/odoo-multi-version:18-latest .
+
+      - name: Build Odoo19 image locally    # ✅ build first
+        run: docker build -f Dockerfile.19 -t rohanp1722/odoo-multi-version:19-latest .
 
       - name: Run Docker Compose (CI)
         run: |
