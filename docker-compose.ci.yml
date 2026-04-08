@@ -2,7 +2,7 @@ services:
   postgres:
     image: postgres:15
     environment:
-      POSTGRES_DB: postgres      # just the default, odoo will create its own
+      POSTGRES_DB: postgres
       POSTGRES_USER: odoo
       POSTGRES_PASSWORD: odoo
     healthcheck:
@@ -21,7 +21,9 @@ services:
     command: >
       odoo
       --db_host=postgres
-      -d test_db_18          # odoo CREATES this automatically
+      --db_user=odoo
+      --db_password=odoo
+      -d test_db_18
       -i base
       --stop-after-init
 
@@ -35,6 +37,8 @@ services:
     command: >
       odoo
       --db_host=postgres
-      -d test_db_19          # odoo CREATES this automatically
+      --db_user=odoo
+      --db_password=odoo
+      -d test_db_19
       -i base
       --stop-after-init
